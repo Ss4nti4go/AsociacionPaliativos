@@ -4,7 +4,7 @@ import { Menu, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import AdminLoginForm from './adminLoginForm';
 import { useAdmin } from './adminContext'; // Asegúrate de que la ruta sea correcta
-
+import AMCP from '../assets/AMCP.png';
 function Header() {
   const { isAdmin, toggleAdmin, disableAdmin } = useAdmin();
   const [isOpen, setIsOpen] = useState(false);
@@ -60,7 +60,7 @@ function Header() {
 
             <div className="w-full lg:w-1/4 flex flex-col items-center mb-4 lg:mb-0  lg:flex">
               <img
-                src="./src/assets/AMCP.png"
+                src={AMCP}
                 alt="Logo"
                 width={180}
                 height={128}

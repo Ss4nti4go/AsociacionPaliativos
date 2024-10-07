@@ -109,7 +109,7 @@ export default function Galeria() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
           <h2 className="text-3xl font-bold mb-4 text-gray-800">Noticias</h2>
           <p className="text-lg text-gray-600 mb-8">Cargando fotos...</p>
@@ -226,14 +226,14 @@ export default function Galeria() {
               onClick={(e) => e.stopPropagation()}
             >
               <div className=" flex flex-col md:flex-row  bg-gray-100 ">
-                <div className="md:w-5/7 ">
+                <div className="md:w-1/2 p-6 ">
                   <img
                     src={activePhoto.url}
                     alt={activePhoto.alt || "Foto ampliada"}
                     className="modal-img w-full h-full  object-cover"
                   />
                 </div>
-                <div className="md:w-1/3 p-6 flex flex-col justify-between   bg-gray-100 ">
+                <div className="md:w-1/2 p-6 flex flex-col justify-between   bg-gray-100 ">
                   <div>
                     <div className="flex items-center mb-4">
                       <img src={ftoPerfil} alt="Perfil" className="w-12 h-12 rounded-full mr-4 border-2 border-blue-500" />

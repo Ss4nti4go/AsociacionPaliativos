@@ -233,7 +233,7 @@ export default function Galeria() {
                     className="modal-img w-full h-full  object-cover"
                   />
                 </div>
-                <div className="md:w-1/2 p-6 flex flex-col justify-between   bg-gray-100 ">
+                <div className="md:w-1/2 p-6 flex flex-col justify-between pb-12 bg-gray-100 ">
                   <div>
                     <div className="flex items-center mb-4">
                       <img src={ftoPerfil} alt="Perfil" className="w-12 h-12 rounded-full mr-4 border-2 border-blue-500" />

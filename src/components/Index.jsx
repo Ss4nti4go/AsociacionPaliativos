@@ -1,13 +1,14 @@
 import Introduction from './IntroduccionIndex';
 import Beneficios from './Beneficios';
-import Noticias from './Noticias';
+import Proyectos from './Proyectos';
 
 function Index(){
     return (
         <div>
             <Introduction />
-            <Noticias />
-            <Beneficios />
+            <Proyectos />
+        
+           
         </div>
     );
 };

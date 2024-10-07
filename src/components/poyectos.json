@@ -1,0 +1,17 @@
+[
+    {
+      "id": 1,
+      "titulo": "Proyecto Hospital Saint Bois",
+      "contenido": "Contenido del Saint Bois...",
+      "imagen": "https://placehold.co/600x400?text=Proyecto+1",
+      "detalles": "Detalles del Proyecto Inicial 1..."
+    },
+    {
+      "id": 2,
+      "titulo": "Proyecto Inicial 2",
+      "contenido": "Contenido del Proyecto Inicial 2...",
+      "imagen": "https://placehold.co/600x400?text=Proyecto+2",
+      "detalles": "Detalles del Proyecto Inicial 2..."
+    }
+  ]
+  

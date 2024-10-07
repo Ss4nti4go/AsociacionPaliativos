@@ -11,8 +11,8 @@ function Introduction() {
           Tu donación puede hacer una gran diferencia en la vida de quienes más lo necesitan.
         </p>
         <button
-          className="bg-orange-400 hover:bg-orange-500 text-white font-semibold py-2 px-4 rounded-full animate-fade-in-delay"
-          onClick={() => window.location.href = '#donacion'}
+          className="bg-orange-500 hover:bg-orange-400 text-white font-semibold py-2 px-4 rounded-full animate-fade-in-delay  hover:scale-110 active:scale-95 transition-all duration-300"  
+          onClick={() => window.location.href = '/donacion'}
        
           aria-controls="quienes-somos-section"
         >

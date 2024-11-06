@@ -1,154 +1,23 @@
-// DonacionPage.js
 import { useState } from 'react';
-import Beneficios from './Beneficios.jsx';
-
-function DonacionPage() {
-  const [step, setStep] = useState(1);
-  const [donante, setDonante] = useState({
-    nombre: '',
-    apellido: '',
-    monto: '',
-  });
-  const [tarjeta, setTarjeta] = useState({
-    numero: '',
-    expiracion: '',
-    cvv: '',
-  });
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setDonante({ ...donante, [name]: value });
-  };
-
-  const handleTarjetaChange = (e) => {
-    const { name, value } = e.target;
-    setTarjeta({ ...tarjeta, [name]: value });
-  };
-
+import Beneficios from './Beneficios';
+import DonationForm from './DonacionForm.jsx';
+import InfoDonaciones from './infodonacion.jsx';
+import DonacionMSJ from './Donacionmsj.jsx';
+export default function DonacionPage() {
   return (
-    <>
-      <div className="p-6 max-w-2xl mx-auto mb-20">
-        {step === 1 ? (
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h2 className="text-2xl font-bold mb-4">Formulario de Donación</h2>
-            <form>
-              <div className="mb-4 relative">
-                <input
-                  type="text"
-                  name="nombre"
-                  value={donante.nombre}
-                  onChange={handleInputChange}
-                  className="peer mt-1 p-2 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500 placeholder-transparent"
-                  placeholder=""
-                  required
-                />
-                <label className="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all duration-300 transform peer-placeholder-shown:top-2 peer-placeholder-shown:text-lg peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-orange-500" htmlFor='nombre'>
-                  Nombre
-                </label>
-              </div>
-              <div className="mb-4 relative">
-                <input
-                  type="text"
-                  name="apellido"
-                  value={donante.apellido}
-                  onChange={handleInputChange}
-                  className="peer mt-1 p-2 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500 placeholder-transparent"
-                  placeholder=" "
-                  required
-                />
-                <label className="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all duration-300 transform peer-placeholder-shown:top-2 peer-placeholder-shown:text-lg peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-orange-500" htmlFor='apellido'>
-                  Apellido
-                </label>
-              </div>
-              <div className="mb-4 relative">
-                <input
-                  type="number"
-                  name="monto"
-                  value={donante.monto}
-                  onChange={handleInputChange}
-                  className="peer mt-1 p-2 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500 placeholder-transparent"
-                  placeholder=" "
-                  required
-                />
-                <label className="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all duration-300 transform peer-placeholder-shown:top-2 peer-placeholder-shown:text-lg peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-orange-500" htmlFor='monto'>
-                  Monto a Donar (UYU)
-                </label>
-              </div>
-              <button
-                type="button"
-                onClick={() => setStep(2)}
-                className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition duration-300"
-              >
-                Siguiente
-              </button>
-            </form>
+    <div className="min-h-20 py-12 px-4 sm:px-6 lg:px-8 max-h-1xl mx-auto">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-4xl font-bold text-green-800 text-center mb-12 transition-all duration-1000 ease-out py-8 bg-gradient-to-b from-green-50 to-green-90">Cuidados Paliativos: Tu Ayuda Importa</h1>
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
+          <div className="bg-white rounded-lg shadow-xl overflow-hidden ">
+            <InfoDonaciones />
           </div>
-        ) : (
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h2 className="text-2xl font-bold mb-4">Datos de Tarjeta</h2>
-            <form>
-              <div className="mb-4 relative">
-                <input
-                  type="text"
-                  name="numero"
-                  value={tarjeta.numero}
-                  onChange={handleTarjetaChange}
-                  className="peer mt-1 p-2 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500 placeholder-transparent"
-                  placeholder=" "
-                  required
-                />
-                <label className="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all duration-300 transform peer-placeholder-shown:top-2 peer-placeholder-shown:text-lg peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-orange-500" htmlFor='numero'>
-                  Número de Tarjeta
-                </label>
-              </div>
-              <div className="mb-4 relative">
-                <input
-                  type="text"
-                  name="expiracion"
-                  value={tarjeta.expiracion}
-                  onChange={handleTarjetaChange}
-                  className="peer mt-1 p-2 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500 placeholder-transparent"
-                  placeholder=""
-                  required
-                />
-                <label className="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all duration-300 transform peer-placeholder-shown:top-2 peer-placeholder-shown:text-lg peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-orange-500" htmlFor='expiracion' >
-                Fecha de Expiración (MM/AA) 
-                </label>
-              </div>
-              <div className="mb-4 relative">
-                <input
-                  type="text"
-                  name="cvv"
-                  value={tarjeta.cvv}
-                  onChange={handleTarjetaChange}
-                  className="peer mt-1 p-2 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500 placeholder-transparent"
-                  placeholder=" "
-                  required
-                />
-                <label className="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all duration-300 transform peer-placeholder-shown:top-2 peer-placeholder-shown:text-lg peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-orange-500" htmlFor='cvv'>
-                  CVV
-                </label>
-              </div>
-              <button
-                type="button"
-                onClick={() => setStep(1)}
-                className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 mr-4 transition duration-300" 
-              >
-                Volver
-              </button>
-              <button
-                type="button"
-                className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition duration-300"
-              >
-                Realizar Pago
-              </button>
-            </form>
+          <div className="bg-white rounded-lg overflow-hidden ">
+              <DonacionMSJ/>
           </div>
-        )}
+        </div>
+        <Beneficios />
       </div>
-      <Beneficios />
-    </>
+    </div>
   );
 }
-
-export default DonacionPage;

@@ -19,12 +19,12 @@ function App() {
       <Header setIsAdmin={setIsAdmin}/>
       <Routes>
         <Route path="*" element={<NotFound />} /> {/* Ruta de error 404 */}
-        <Route path="/" element={<Index />} />
+        <Route path="/*" element={<Index />} />
         <Route path="/inicio" element={<Index />} />
         <Route path="/donacion" element={<DonacionPage />} />
         <Route path="/contacto" element={<Contacto />} />
         <Route path="/galeria" element={<GaleriaPage />} />
-        <Route path="/proyecto/:id" element={<ProyectoDetalles />} /> {/* Nueva ruta para ver detalles del proyecto */}
+        <Route path="/proyecto/:id" element={<ProyectoDetalles />} /> 
       </Routes>
       <Footer/>
     </BrowserRouter>

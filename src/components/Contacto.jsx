@@ -44,7 +44,7 @@ export default function Contacto() {
                 Cómo respondemos
               </h3>
               <p className="text-gray-600 mb-4 text-lg">
-                Nos comprometemos a responder a todas las consultas dentro de 24 horas hábiles. Puede esperar nuestra respuesta a través de:
+                Nos comprometemos a responder a todas las consultas dentro de 72 horas hábiles. Puede esperar nuestra respuesta a través de:
               </p>
               <ul className="list-none text-gray-600 space-y-2">
                 {['Correo electrónico', 'Llamada telefónica', 'Mensaje de texto (si lo prefiere)'].map((item, index) => (

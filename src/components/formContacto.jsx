@@ -2,21 +2,34 @@
 
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { getFirestore, collection, addDoc } from 'firebase/firestore'
+import Swal from 'sweetalert2'
 
 export default function ContactForm() {
   const { register, handleSubmit, formState: { errors }, reset } = useForm()
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const onSubmit = (data) => {
-    setIsSubmitting(true)
-    // Simulate form submission
-    setTimeout(() => {
-      console.log(data)
-      setIsSubmitted(true)
-      setIsSubmitting(false)
-      reset()
-    }, 2000)
+  const onSubmit = async (data) => {
+    setIsSubmitting(true);
+    const db = getFirestore();
+    const ordersCollection = collection(db, 'UsersContacto');
+
+    try {
+      const docRef = await addDoc(ordersCollection, data);
+      setIsSubmitted(true);
+      reset(); 
+    } catch (error) {
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title: 'Hubo un error',
+        showConfirmButton: false,
+        timer: 1500
+      });
+    } finally {
+      setIsSubmitting(false); // Reactivar el botón después de procesar
+    }
   }
 
   return (

@@ -1,43 +1,69 @@
-
-import React, { useState } from 'react'
-import { motion } from 'framer-motion'
-import Swal from 'sweetalert2'
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import Swal from 'sweetalert2';
+import { getDocs, getFirestore, collection, query, where } from 'firebase/firestore';
+import { useAdmin } from './adminContext';
 
 export default function AdminLoginForm({ onClose, onLogin }) {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const { isAdmin, toggleAdmin, disableAdmin } = useAdmin();
+  //const adminUsername = "amigoscuidadospaliativos@gmail.com"
+  //const adminPassword = "G8#qL2-hP"
+  function Error() {
+    Swal.fire({
+      icon: 'error',
+      title: 'Error de inicio de sesión',
+      text: 'Credenciales incorrectas o no tienes permisos de administrador.',
+      confirmButtonColor: '#d33',
+    });
+  }
 
   const handleLogin = async (e) => {
-    e.preventDefault()
-    setIsLoading(true)
+    e.preventDefault();
 
-    // Simulating an API call with setTimeout
-    setTimeout(() => {
-      const adminUsername = "amigoscuidadospaliativos@gmail.com"
-      const adminPassword = "G8#qL2-hP"
+    setIsLoading(true);
 
-      if (username === adminUsername && password === adminPassword) {
-        Swal.fire({
-          icon: 'success',
-          title: '¡Bienvenido, Admin!',
-          text: 'Has iniciado sesión correctamente.',
-          confirmButtonColor: '#3085d6',
-        }).then(() => {
-          onLogin()
-          onClose()
-        })
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error de inicio de sesión',
-          text: 'Credenciales incorrectas. Por favor, intenta de nuevo.',
-          confirmButtonColor: '#d33',
-        })
-      }
-      setIsLoading(false)
-    }, 1000)
-  }
+    const db = getFirestore();
+    const docRef = collection(db, 'usuarios');
+
+    // Consulta: buscar el usuario con el username proporcionado
+    const q = query(docRef, where('username', '==', username));
+    
+    getDocs(q)
+      .then((snapshot) => {
+        if (!snapshot.empty) {
+          const userDoc = snapshot.docs[0];
+          const userData = userDoc.data();
+          setIsLoading(false);
+          console.log( userData.contraseña);
+          if (userData.contraseña === password && userData.rol === 'admin') {
+            setIsLoading(false);
+            registrado();
+            toggleAdmin();
+          } 
+        } else {
+          setIsLoading(false);
+          Error();
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoading(false);
+      });
+  };
+
+  const registrado = () => {
+    Swal.fire({
+      icon: 'success',
+      title: '¡Bienvenido, Admin!',
+      text: 'Has iniciado sesión correctamente.',
+      confirmButtonColor: '#3085d6',
+    });
+    // Aquí podrías llamar a `onLogin()` si deseas realizar alguna acción posterior al login
+ 
+  };
 
   return (
     <motion.div
@@ -50,7 +76,7 @@ export default function AdminLoginForm({ onClose, onLogin }) {
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
-        transition={{ type: "spring", duration: 0.5 }}
+        transition={{ type: 'spring', duration: 0.5 }}
         className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md"
         onSubmit={handleLogin}
       >
@@ -88,16 +114,35 @@ export default function AdminLoginForm({ onClose, onLogin }) {
             type="submit"
             className="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 transition-colors duration-200"
             disabled={isLoading}
+            onClick={handleLogin}
           >
             {isLoading ? (
               <span className="flex items-center justify-center">
-                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                <svg
+                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
                 </svg>
                 Ingresando...
               </span>
-            ) : 'Ingresar'}
+            ) : (
+              'Ingresar'
+            )}
           </button>
           <button
             type="button"
@@ -109,5 +154,5 @@ export default function AdminLoginForm({ onClose, onLogin }) {
         </div>
       </motion.form>
     </motion.div>
-  )
+  );
 }

@@ -2,123 +2,186 @@
 
 import { useState } from 'react';
 
-function DonationForm() {
-  const [monto, setMonto] = useState('');
-  const [montoPersonalizado, setMontoPersonalizado] = useState('');
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+export default function DonationForm() {
+  const [step, setStep] = useState(1);
+  const [montoValido, setMontoValido] = useState(true);
+  const [donante, setDonante] = useState({
+    nombre: '',
+    apellido: '',
+    monto: '50', // Valor inicial hardcodeado en 50
+  });
+  const [tarjeta, setTarjeta] = useState({
+    numero: '',
+    expiracion: '',
+    cvv: '',
+  });
 
-  const handleMontoChange = (e) => {
-    setMonto(e.target.value);
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setDonante({ ...donante, [name]: value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setTimeout(() => {
-      if (monto === 'personalizado' && !montoPersonalizado) {
-        alert('Por favor, ingrese un monto personalizado.');
-      } else {
-        setIsSubmitted(true);
-      }
-      setIsSubmitting(false);
-    }, 2000);
+  const handleTarjetaChange = (e) => {
+    const { name, value } = e.target;
+    setTarjeta({ ...tarjeta, [name]: value });
+  };
+  const checkMonto = (monto) => {
+    if (monto >= 50) {
+      setStep(2);
+      setMontoValido(true);
+    }else{
+      setMontoValido(false);
+    }
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white shadow-lg rounded-lg my-10">
-      <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">Contáctanos</h2>
-      {isSubmitted ? (
-        <div className="space-y-6 text-center">
-          <div className="p-4 bg-green-100 text-green-700 rounded-lg">
-            <p className="text-xl">¡Gracias por tu donación!</p>
-          </div>
-          <button
-            onClick={() => setIsSubmitted(false)}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105"
-          >
-            Hacer otra donación
-          </button>
+    <div className="p-10 min-w-sm mx-auto mb-20 ">
+      {step === 1 ? (
+        <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300" >
+          <h2 className="text-2xl font-bold mb-4">Formulario de Donación</h2>
+          <form>
+            <div className="mb-4 relative">
+              <input
+                type="text"
+                id="nombre"
+                name="nombre"
+                value={donante.nombre}
+                onChange={handleInputChange}
+                className="peer mt-1 p-2 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500 placeholder-transparent"
+                placeholder="Nombre"
+                required
+              />
+              <label
+                className="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all duration-300 transform peer-placeholder-shown:top-2 peer-placeholder-shown:text-lg peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-orange-500"
+                htmlFor="nombre"
+              >
+                Nombre
+              </label>
+            </div>
+            <div className="mb-4 relative">
+              <input
+                type="text"
+                id="apellido"
+                name="apellido"
+                value={donante.apellido}
+                onChange={handleInputChange}
+                className="peer mt-1 p-2 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500 placeholder-transparent"
+                placeholder="Apellido"
+                required
+              />
+              <label
+                className="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all duration-300 transform peer-placeholder-shown:top-2 peer-placeholder-shown:text-lg peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-orange-500"
+                htmlFor="apellido"
+              >
+                Apellido
+              </label>
+            </div>
+            <div className="mb-4 relative">
+              <input
+                type="number"
+                id="monto"
+                name="monto"
+                value={donante.monto}
+                onChange={handleInputChange}
+                min="50" // Monto mínimo de 50
+                className="peer mt-1 p-2 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500 placeholder-transparent"
+                placeholder="Monto"
+                required
+              />
+              <label
+                className="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all duration-300 transform peer-placeholder-shown:top-2 peer-placeholder-shown:text-lg peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-orange-500"
+                htmlFor="monto"
+              >
+                Monto a Donar (UYU)
+              </label>
+             
+            </div>
+            <button
+              type="button"
+              onClick={() => checkMonto(donante.monto)}
+              className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition duration-300"
+            >
+              Siguiente
+            </button>
+            <p className={`text-sm mt-1 ml-5 transition duration-300 text transform ${montoValido ? "text-gray-500" : "text-red-500  scale-110"}`}>
+               El monto mínimo para donar es 50 UYU.
+            </p>
+          </form>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Nombre */}
-          <div className="relative">
-            <input
-              id="nombre"
-              name="nombre"
-              required
-              className="peer w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-blue-500 placeholder-transparent text-lg py-2 transition duration-300"
-              placeholder="Nombre"
-            />
-            <label
-              htmlFor="nombre"
-              className="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-blue-500"
+        <div className="bg-white p-6 rounded-lg shadow-lg">
+          <h2 className="text-2xl font-bold mb-4">Datos de Tarjeta</h2>
+          <form>
+            <div className="mb-4 relative">
+              <input
+                type="text"
+                id="numero"
+                name="numero"
+                value={tarjeta.numero}
+                onChange={handleTarjetaChange}
+                className="peer mt-1 p-2 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500 placeholder-transparent"
+                placeholder="Número de Tarjeta"
+                required
+              />
+              <label
+                className="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all duration-300 transform peer-placeholder-shown:top-2 peer-placeholder-shown:text-lg peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-orange-500"
+                htmlFor="numero"
+              >
+                Número de Tarjeta
+              </label>
+            </div>
+            <div className="mb-4 relative">
+              <input
+                type="text"
+                id="expiracion"
+                name="expiracion"
+                value={tarjeta.expiracion}
+                onChange={handleTarjetaChange}
+                className="peer mt-1 p-2 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500 placeholder-transparent"
+                placeholder="Fecha de Expiración"
+                required
+              />
+              <label
+                className="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all duration-300 transform peer-placeholder-shown:top-2 peer-placeholder-shown:text-lg peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-orange-500"
+                htmlFor="expiracion"
+              >
+                Fecha de Expiración (MM/AA)
+              </label>
+            </div>
+            <div className="mb-4 relative">
+              <input
+                type="text"
+                id="cvv"
+                name="cvv"
+                value={tarjeta.cvv}
+                onChange={handleTarjetaChange}
+                className="peer mt-1 p-2 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-orange-500 placeholder-transparent"
+                placeholder="CVV"
+                required
+              />
+              <label
+                className="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all duration-300 transform peer-placeholder-shown:top-2 peer-placeholder-shown:text-lg peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-orange-500"
+                htmlFor="cvv"
+              >
+                CVV
+              </label>
+            </div>
+            <button
+              type="button"
+              onClick={() => setStep(1)}
+              className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 mr-4 transition duration-300"
             >
-              Nombre
-            </label>
-          </div>
-          {/* Email */}
-          <div className="relative">
-            <input
-              id="correo"
-              type="email"
-              name="correo"
-              required
-              className="peer w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-blue-500 placeholder-transparent text-lg py-2 transition duration-300"
-              placeholder="Correo Electrónico"
-            />
-            <label
-              htmlFor="correo"
-              className="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-blue-500"
+              Volver
+            </button>
+            <button
+              type="button"
+              className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition duration-300"
             >
-         
-            </label>
-          </div>
-          {/* Teléfono */}
-          <div className="relative">
-            <input
-              id="telefono"
-              type="tel"
-              name="telefono"
-              required
-              className="peer w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-blue-500 placeholder-transparent text-lg py-2 transition duration-300"
-              placeholder="Teléfono"
-            />
-            <label
-              htmlFor="telefono"
-              className="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-blue-500"
-            >
-            
-            </label>
-          </div>
-          {/* Mensaje */}
-          <div className="relative">
-            <textarea
-              id="mensaje"
-              name="mensaje"
-              required
-              className="peer w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-blue-500 placeholder-transparent text-lg py-2 transition duration-300"
-              placeholder="Mensaje"
-            />
-            <label
-              htmlFor="mensaje"
-              className="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-blue-500"
-            >
-             
-            </label>
-          </div>
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className={`w-full bg-blue-500 text-white py-3 rounded-lg shadow-md hover:bg-blue-600 transition duration-300 ease-in-out transform hover:scale-105 ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
-          >
-            {isSubmitting ? 'Procesando...' : 'Enviar'}
-          </button>
-        </form>
+              Realizar Pago
+            </button>
+          </form>
+        </div>
       )}
     </div>
   );
 }
-
-export default DonationForm;
